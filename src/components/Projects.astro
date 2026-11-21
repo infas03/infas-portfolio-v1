@@ -1,0 +1,62 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import ProjectArt from './ProjectArt.astro';
+import Icon from './Icon.astro';
+import { projects, site } from '../data/site';
+
+const featured = projects.filter((p) => p.featured);
+const rest = projects.filter((p) => !p.featured);
+---
+
+<section id="projects" class="section section-alt">
+  <div class="wrap">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <SectionHeading eyebrow="Projects" title="Some of my recent work" />
+      <a href={site.github} target="_blank" rel="noopener" class="btn btn-ghost !h-11" data-reveal>
+        More on GitHub <Icon name="lucide:arrow-up-right" size={16} />
+      </a>
+    </div>
+
+    <div class="mt-12 grid gap-5 lg:grid-cols-2">
+      {featured.map((p, i) => (
+        <article class="project card card-lift group overflow-hidden" data-spotlight data-reveal style={`--d:${i * 110}ms`}>
+          <div class="cover h-52 sm:h-60"><ProjectArt kind={p.art} /></div>
+          <div class="p-6 sm:p-8">
+            <p class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-amber">{p.kind}</p>
+            <h3 class="mt-2 text-2xl font-semibold sm:text-[1.7rem]">{p.title}</h3>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{p.text}</p>
+            <ul class="mt-5 flex flex-wrap gap-2">{p.tags.map((t) => <li class="chip">{t}</li>)}</ul>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {rest.map((p, i) => (
+        <article class="project card card-lift group overflow-hidden" data-spotlight data-reveal style={`--d:${i * 110}ms`}>
+          <div class="cover h-44"><ProjectArt kind={p.art} /></div>
+          <div class="p-6">
+            <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-amber">{p.kind}</p>
+            <h3 class="mt-2 text-xl font-semibold">{p.title}</h3>
+            <p class="mt-3 text-[0.9rem] leading-relaxed text-muted">{p.text}</p>
+            <ul class="mt-5 flex flex-wrap gap-2">{p.tags.map((t) => <li class="chip">{t}</li>)}</ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cover {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-line);
+    background:
+      radial-gradient(ellipse 70% 90% at 50% 110%, rgb(245 165 36 / 0.14), transparent 70%),
+      radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px) 0 0 / 18px 18px,
+      var(--color-ink-950);
+  }
+  .cover :global(svg) { transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .project:hover .cover :global(svg) { transform: scale(1.05); }
+</style>

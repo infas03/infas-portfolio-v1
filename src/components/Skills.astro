@@ -1,0 +1,68 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { skillGroups, techMarquee } from '../data/site';
+---
+
+<section id="skills" class="section section-alt overflow-hidden">
+  <div class="wrap">
+    <SectionHeading eyebrow="Skills" title="Skills & technologies" />
+  </div>
+
+  <div class="mt-12 flex flex-col gap-4" data-reveal>
+    {techMarquee.map((row, r) => (
+      <div class:list={['marquee', r % 2 === 1 && 'marquee-reverse']} style={`--speed:${52 + r * 8}s`}>
+        <div class="marquee-track">
+          {[0, 1].map((copy) => (
+            <ul class="flex shrink-0" aria-hidden={copy === 1 ? 'true' : undefined}>
+              {row.map((t) => (
+                <li class="tech mx-2">
+                  <Icon name={t.icon} size={18} />
+                  {t.label}
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="wrap mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+    {skillGroups.map((g, i) => (
+      <article class="card p-6" data-spotlight data-reveal style={`--d:${(i % 4) * 90}ms`}>
+        <div class="flex items-center gap-3">
+          <span class="icon-box !size-9 !rounded-[0.65rem]"><Icon name={g.icon} size={16} /></span>
+          <h3 class="text-[1.05rem] font-semibold">{g.title}</h3>
+        </div>
+        <ul class="mt-5 flex flex-wrap gap-2">
+          {g.items.map((item) => <li class="chip">{item}</li>)}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .tech {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.8rem 1.15rem;
+    border-radius: 0.9rem;
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.025);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--color-muted);
+    transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+  }
+  .tech :global(svg) { color: var(--color-dim); transition: color 0.25s ease; }
+  .tech:hover {
+    color: var(--color-fg);
+    border-color: rgb(245 165 36 / 0.45);
+    background: rgb(245 165 36 / 0.06);
+  }
+  .tech:hover :global(svg) { color: var(--color-amber); }
+</style>

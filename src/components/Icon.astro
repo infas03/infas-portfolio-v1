@@ -1,0 +1,28 @@
+---
+// Inline SVG icons, resolved at build time. Usage: <Icon name="lucide:mail" /> or <Icon name="si:react" />
+import { getIconData, iconToSVG, iconToHTML, replaceIDs } from '@iconify/utils';
+import lucide from '@iconify-json/lucide/icons.json';
+import simpleIcons from '@iconify-json/simple-icons/icons.json';
+
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+}
+
+const sets: Record<string, any> = { lucide, si: simpleIcons };
+const { name, size = 20, class: className = '' } = Astro.props;
+const [prefix, icon] = name.split(':');
+const data = sets[prefix] ? getIconData(sets[prefix], icon) : null;
+if (!data) throw new Error(`Icon not found: ${name}`);
+
+const svg = iconToSVG(data, { height: size });
+const html = iconToHTML(replaceIDs(svg.body), {
+  ...svg.attributes,
+  class: className,
+  'aria-hidden': 'true',
+  focusable: 'false',
+});
+---
+
+<Fragment set:html={html} />

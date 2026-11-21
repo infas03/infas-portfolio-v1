@@ -1,0 +1,84 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { experience } from '../data/site';
+---
+
+<section id="experience" class="section">
+  <div class="wrap">
+    <SectionHeading eyebrow="Experience" title="Where I've worked" />
+
+    <ol class="timeline mt-14" data-timeline>
+      <div class="rail" aria-hidden="true"><div class="rail-fill" data-timeline-fill></div></div>
+      {experience.map((job) => (
+        <li class="item" data-reveal>
+          <span class:list={['dot', job.current && 'dot-live']} aria-hidden="true"></span>
+          <div class="grid gap-x-10 gap-y-4 lg:grid-cols-[15rem_1fr]">
+            <div>
+              <p class="font-mono text-xs uppercase tracking-[0.14em] text-amber">{job.period}</p>
+              <p class="mt-2 font-display text-xl font-semibold">{job.company}</p>
+              <p class="mt-1 text-sm text-dim">{job.place}</p>
+            </div>
+            <div class="card p-6 sm:p-7" data-spotlight>
+              <h3 class="text-xl font-semibold">{job.role}</h3>
+              <ul class="mt-4 space-y-2.5">
+                {job.points.map((pt) => (
+                  <li class="relative pl-5 text-[0.93rem] leading-relaxed text-muted before:absolute before:left-0 before:top-[0.65em] before:size-1.5 before:rounded-full before:bg-amber/70">
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+              <ul class="mt-5 flex flex-wrap gap-2">
+                {job.tags.map((t) => <li class="chip">{t}</li>)}
+              </ul>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-left: 2.25rem;
+  }
+  .rail {
+    position: absolute;
+    left: 6px;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: var(--color-line);
+  }
+  .rail-fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(var(--color-amber), rgb(245 165 36 / 0.3));
+    transform: scaleY(var(--fill, 0));
+    transform-origin: top;
+  }
+  .item { position: relative; }
+  .dot {
+    position: absolute;
+    left: -2.25rem;
+    top: 0.2rem;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 2px solid var(--color-amber);
+    background: var(--color-ink-950);
+  }
+  .dot-live { background: var(--color-amber); }
+  .dot-live::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: var(--color-amber);
+    animation: ping-soft 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+</style>

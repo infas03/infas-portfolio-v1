@@ -1,0 +1,143 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+const links = [
+  { icon: 'lucide:mail', label: 'Email', value: site.email, href: `mailto:${site.email}` },
+  { icon: 'lucide:phone', label: 'Mobile', value: site.phone, href: site.phoneHref },
+  { icon: 'si:whatsapp', label: 'WhatsApp', value: site.phone, href: site.whatsapp },
+  { icon: 'si:linkedin', label: 'LinkedIn', value: site.linkedin.replace('https://', ''), href: site.linkedin },
+  { icon: 'si:github', label: 'GitHub', value: site.github.replace('https://', ''), href: site.github },
+  { icon: 'lucide:map-pin', label: 'Location', value: site.location },
+];
+---
+
+<section id="contact" class="section overflow-hidden">
+  <div class="contact-glow" aria-hidden="true"></div>
+  <div class="wrap grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+    <div>
+      <p class="eyebrow" data-reveal>Get in touch</p>
+      <h2 class="mt-4 text-4xl font-semibold leading-[1.04] sm:text-5xl" data-reveal style="--d:80ms">Contact <span class="text-amber">me</span></h2>
+      <p class="mt-5 max-w-md text-base leading-relaxed text-muted sm:text-lg" data-reveal style="--d:160ms">
+        Email or WhatsApp is the fastest way to reach me. You can also use the form.
+      </p>
+
+      <ul class="mt-9 space-y-3">
+        {links.map((l, i) => (
+          <li data-reveal style={`--d:${i * 70}ms`}>
+            {l.href ? (
+              <a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel="noopener" class="row group">
+                <span class="icon-box !size-10 shrink-0"><Icon name={l.icon} size={16} /></span>
+                <span class="min-w-0">
+                  <span class="block font-mono text-[0.66rem] uppercase tracking-[0.16em] text-dim">{l.label}</span>
+                  <span class="block truncate text-[0.95rem] transition-colors group-hover:text-amber">{l.value}</span>
+                </span>
+                <Icon name="lucide:arrow-up-right" size={16} class="ml-auto shrink-0 text-dim transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-amber" />
+              </a>
+            ) : (
+              <div class="row">
+                <span class="icon-box !size-10 shrink-0"><Icon name={l.icon} size={16} /></span>
+                <span>
+                  <span class="block font-mono text-[0.66rem] uppercase tracking-[0.16em] text-dim">{l.label}</span>
+                  <span class="block text-[0.95rem]">{l.value}</span>
+                </span>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <form class="card self-start p-6 sm:p-8" data-contact-form data-email={site.email} data-key={site.web3formsKey} data-spotlight data-reveal="scale">
+      <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="field">
+          <span>Your name</span>
+          <input type="text" name="name" autocomplete="name" required placeholder="Jane Doe" />
+        </label>
+        <label class="field">
+          <span>Your email</span>
+          <input type="email" name="email" autocomplete="email" required placeholder="jane@company.com" />
+        </label>
+      </div>
+      <label class="field mt-5">
+        <span>Subject</span>
+        <input type="text" name="subject" placeholder="A project, a role, or just hello" />
+      </label>
+      <label class="field mt-5">
+        <span>Message</span>
+        <textarea name="message" rows="6" required placeholder="Tell me about your project..."></textarea>
+      </label>
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <button type="submit" class="btn btn-primary" data-form-button>
+          <span data-form-label>Send message</span> <Icon name="lucide:send" size={16} class="nudge" />
+        </button>
+        <p class="status text-sm" data-form-status role="status" aria-live="polite">
+          {!site.web3formsKey && <span class="text-xs text-dim">Opens your email app with the message ready to send.</span>}
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact-glow {
+    position: absolute;
+    left: 50%;
+    bottom: -22rem;
+    width: 60rem;
+    height: 34rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgb(245 165 36 / 0.09);
+    filter: blur(100px);
+    pointer-events: none;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 1rem;
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.02);
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+  }
+  a.row:hover {
+    border-color: rgb(245 165 36 / 0.4);
+    background: rgb(245 165 36 / 0.04);
+  }
+  .status[data-state="ok"] { color: #34d399; }
+  .status[data-state="error"] { color: #f87171; }
+  form :global([data-form-button][disabled]) { opacity: 0.6; cursor: progress; }
+  .field { display: block; }
+  .field > span {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 0.8rem;
+    border: 1px solid var(--color-line);
+    background: rgb(8 9 11 / 0.6);
+    color: var(--color-fg);
+    font-size: 0.95rem;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color: rgb(125 130 138 / 0.7); }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--color-amber);
+    box-shadow: 0 0 0 4px rgb(245 165 36 / 0.12);
+  }
+</style>

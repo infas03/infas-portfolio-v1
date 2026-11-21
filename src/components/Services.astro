@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { services } from '../data/site';
+---
+
+<section id="services" class="section">
+  <div class="wrap">
+    <SectionHeading eyebrow="Services" title="What I do" />
+
+    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((s, i) => (
+        <article class="card card-lift group p-7" data-spotlight data-reveal style={`--d:${(i % 3) * 100}ms`}>
+          <div class="flex items-start justify-between">
+            <span class="icon-box transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
+              <Icon name={s.icon} size={20} />
+            </span>
+            <span class="font-mono text-xs text-dim">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <h3 class="mt-6 text-xl font-semibold">{s.title}</h3>
+          <p class="mt-3 text-[0.93rem] leading-relaxed text-muted">{s.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

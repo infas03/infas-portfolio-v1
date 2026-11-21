@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Geist Variable", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, monospace;
+
+  --color-ink-950: #08090b;
+  --color-ink-900: #0c0e11;
+  --color-ink-800: #121519;
+  --color-ink-700: #1a1e24;
+  --color-ink-600: #262b33;
+  --color-fg: #f4f2ed;
+  --color-muted: #a3a7ae;
+  --color-dim: #7d828a;
+  --color-amber: #f5a524;
+  --color-amber-deep: #e59a00;
+  --color-line: rgb(255 255 255 / 0.08);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    background: var(--color-ink-950);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-fg);
+    background: var(--color-ink-950);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: var(--color-amber);
+    color: var(--color-ink-950);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 74rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) { .wrap { padding-inline: 2rem; } }
+
+  .section {
+    position: relative;
+    padding-block: clamp(4.5rem, 9vw, 7.5rem);
+    border-top: 1px solid var(--color-line);
+  }
+  .section-alt { background: var(--color-ink-900); }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-amber);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    height: 3rem;
+    padding-inline: 1.4rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .btn svg { transition: transform 0.25s ease; }
+  .btn:hover svg.nudge { transform: translateX(4px); }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--color-amber);
+    color: var(--color-ink-950);
+    box-shadow: 0 0 0 0 rgb(245 165 36 / 0);
+  }
+  .btn-primary:hover {
+    background: #ffb739;
+    box-shadow: 0 10px 34px -10px rgb(245 165 36 / 0.65);
+  }
+  .btn-ghost {
+    border: 1px solid rgb(255 255 255 / 0.16);
+    color: var(--color-fg);
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-amber);
+    color: var(--color-amber);
+  }
+
+  /* Card with a border that lights up under the cursor (see main.ts for --mx / --my) */
+  .card {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: 1.1rem;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.035), rgb(255 255 255 / 0.012));
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.35s ease;
+  }
+  .card::before,
+  .card::after {
+    content: "";
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .card::before {
+    inset: -1px;
+    padding: 1px;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgb(245 165 36 / 0.75), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .card::after {
+    inset: 0;
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgb(245 165 36 / 0.07), transparent 70%);
+  }
+  .card:hover::before,
+  .card:hover::after { opacity: 1; }
+  .card-lift:hover { transform: translateY(-4px); }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.03);
+    font-size: 0.76rem;
+    line-height: 1.2;
+    color: var(--color-muted);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .chip:hover {
+    color: var(--color-fg);
+    border-color: rgb(245 165 36 / 0.5);
+  }
+
+  .icon-box {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.8rem;
+    border: 1px solid rgb(245 165 36 / 0.3);
+    background: rgb(245 165 36 / 0.08);
+    color: var(--color-amber);
+  }
+}
+
+/* ---------- Page backdrop ---------- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.028) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 85%);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 85%);
+}
+
+/* ---------- Scroll reveal (only hides content when JS is running) ---------- */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+html.js [data-reveal="left"] { transform: translateX(-26px); }
+html.js [data-reveal="scale"] { transform: scale(0.96); }
+html.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Hero entrance ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 4px;
+  vertical-align: -0.18em;
+  background: var(--color-amber);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes ping-soft {
+  0% { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* ---------- Tech marquee ---------- */
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--speed, 48s) linear infinite;
+}
+.marquee-reverse .marquee-track { animation-direction: reverse; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html.js [data-reveal] { opacity: 1; transform: none; }
+  .marquee-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
+  .marquee-track > [aria-hidden="true"] { display: none; }
+  .marquee { -webkit-mask-image: none; mask-image: none; }
+}

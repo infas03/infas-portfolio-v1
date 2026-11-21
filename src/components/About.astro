@@ -1,0 +1,74 @@
+---
+import Icon from './Icon.astro';
+import { about, site } from '../data/site';
+
+const info = [
+  { icon: 'lucide:user', label: 'Name', value: site.fullName },
+  { icon: 'lucide:briefcase', label: 'Role', value: site.role },
+  { icon: 'lucide:mail', label: 'Email', value: site.email, href: `mailto:${site.email}` },
+  { icon: 'lucide:phone', label: 'Mobile', value: site.phone, href: site.phoneHref },
+  { icon: 'lucide:map-pin', label: 'Location', value: site.location },
+];
+---
+
+<section id="about" class="section section-alt">
+  <div class="wrap grid gap-14 lg:grid-cols-[1.12fr_0.88fr] lg:gap-16">
+    <div>
+      <p class="eyebrow" data-reveal>About me</p>
+      <h2 class="mt-4 text-3xl font-semibold leading-[1.08] sm:text-4xl lg:text-[2.75rem]" data-reveal style="--d:80ms">
+        {about.heading}
+      </h2>
+      {about.paragraphs.map((p, i) => (
+        <p class="mt-5 text-base leading-relaxed text-muted sm:text-[1.05rem]" data-reveal style={`--d:${160 + i * 80}ms`}>
+          {p}
+        </p>
+      ))}
+
+      <dl class="mt-9 grid max-w-xl grid-cols-3 gap-3">
+        {about.stats.map((s, i) => (
+          <div class="card px-4 py-5" data-spotlight data-reveal style={`--d:${i * 90}ms`}>
+            <dd class="font-display text-4xl font-bold leading-none text-amber">
+              <span data-count={s.value}>{s.value}</span>{s.suffix}
+            </dd>
+            <dt class="mt-2.5 text-xs leading-snug text-muted">{s.label}</dt>
+          </div>
+        ))}
+      </dl>
+
+      <div class="mt-8 flex flex-wrap gap-3" data-reveal>
+        <a href={site.resume} download class="btn btn-ghost">
+          Download résumé <Icon name="lucide:download" size={16} />
+        </a>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-5">
+      <div class="card p-6 sm:p-7" data-spotlight data-reveal="scale">
+        <ul class="divide-y divide-line">
+          {info.map((row) => (
+            <li class="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+              <span class="icon-box !size-10 shrink-0"><Icon name={row.icon} size={17} /></span>
+              <div class="min-w-0">
+                <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-dim">{row.label}</p>
+                {row.href ? (
+                  <a href={row.href} class="mt-0.5 block truncate text-[0.95rem] transition-colors hover:text-amber">{row.value}</a>
+                ) : (
+                  <p class="mt-0.5 text-[0.95rem]">{row.value}</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="card flex items-start gap-4 p-6 sm:p-7" data-spotlight data-reveal="scale" style="--d:120ms">
+        <span class="icon-box !size-10 shrink-0"><Icon name="lucide:graduation-cap" size={18} /></span>
+        <div>
+          <p class="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-dim">Education · {about.education.period}</p>
+          <p class="mt-1 font-display text-lg font-semibold leading-snug">{about.education.degree}</p>
+          <p class="mt-1 text-sm text-muted">{about.education.school}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,6 @@
+{
+  // Static deploy to Cloudflare: `npm run deploy`
+  "name": "infas-portfolio",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./dist" }
+}

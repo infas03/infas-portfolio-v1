@@ -1,0 +1,268 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/infas.png';
+import Icon from './Icon.astro';
+import { site, heroBadges } from '../data/site';
+---
+
+<section id="top" class="relative flex min-h-svh items-center overflow-hidden pb-16 pt-28 lg:pb-20 lg:pt-32">
+  <div class="glow glow-a" aria-hidden="true"></div>
+  <div class="glow glow-b" aria-hidden="true"></div>
+
+  <div class="wrap grid items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
+    <div>
+      <p class="rise inline-flex items-center gap-2.5 rounded-full border border-line bg-white/[0.03] py-1.5 pl-3 pr-4 text-xs text-muted" style="--d:60ms">
+        <span class="relative flex size-2">
+          <span class="ping absolute inset-0 rounded-full bg-emerald-400"></span>
+          <span class="relative size-2 rounded-full bg-emerald-400"></span>
+        </span>
+        {site.status}
+      </p>
+
+      <p class="rise mt-8" style="--d:140ms"><span class="eyebrow">Hello, I'm</span></p>
+
+      <h1 class="rise mt-4 text-[clamp(3rem,8.4vw,5.75rem)] font-bold leading-[0.94] tracking-[-0.035em]" style="--d:220ms">
+        {site.firstName} <span class="text-amber">{site.lastName}</span>
+      </h1>
+
+      <p class="rise mt-5 min-h-[2.2rem] font-display text-xl font-medium text-fg/90 sm:text-2xl" style="--d:300ms">
+        <span data-typed={JSON.stringify(site.roles)}>{site.roles[0]}</span><span class="caret" aria-hidden="true"></span>
+      </p>
+
+      <p class="rise mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg" style="--d:380ms">
+        {site.intro}
+      </p>
+
+      <div class="rise mt-9 flex flex-wrap items-center gap-3" style="--d:460ms">
+        <a href="#contact" class="btn btn-primary">
+          Contact me <Icon name="lucide:arrow-right" size={17} class="nudge" />
+        </a>
+        <a href="#projects" class="btn btn-ghost">
+          See projects <Icon name="lucide:layout-grid" size={16} />
+        </a>
+      </div>
+
+      <div class="rise mt-9 flex items-center gap-3" style="--d:540ms">
+        <a href={site.github} target="_blank" rel="noopener" class="social" aria-label="GitHub"><Icon name="si:github" size={17} /></a>
+        <a href={site.linkedin} target="_blank" rel="noopener" class="social" aria-label="LinkedIn"><Icon name="si:linkedin" size={16} /></a>
+        <a href={`mailto:${site.email}`} class="social" aria-label="Email"><Icon name="lucide:mail" size={17} /></a>
+        <a href={site.whatsapp} target="_blank" rel="noopener" class="social" aria-label="WhatsApp"><Icon name="si:whatsapp" size={17} /></a>
+        <span class="ml-2 hidden h-px w-10 bg-line sm:block"></span>
+        <span class="hidden items-center gap-1.5 text-xs text-dim sm:flex">
+          <Icon name="lucide:map-pin" size={13} />{site.location}
+        </span>
+      </div>
+    </div>
+
+    <div class="rise" style="--d:300ms">
+      <div class="stage" data-parallax>
+        <div class="halo" aria-hidden="true"></div>
+        <div class="ring ring-outer" aria-hidden="true"></div>
+        <div class="ring ring-dashed" aria-hidden="true"><i></i><i></i></div>
+        <div class="ring ring-arc" aria-hidden="true"></div>
+
+        <div class="disc">
+          <Image
+            src={portrait}
+            alt={`Portrait of ${site.name}`}
+            widths={[420, 640, 900]}
+            sizes="(min-width: 1024px) 440px, 78vw"
+            format="webp"
+            quality={82}
+            loading="eager"
+            fetchpriority="high"
+            class="portrait"
+          />
+        </div>
+
+        {heroBadges.map((b) => (
+          <div class:list={['badge-pos', b.pos]}>
+            <div class="badge" style={`animation-delay:${b.delay}`}>
+              <Icon name={b.icon} size={15} class="text-amber" />
+              {b.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <a href="#about" class="scroll-cue rise" style="--d:900ms" aria-label="Scroll to about">
+    <span></span>
+  </a>
+</section>
+
+<style>
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+  .glow-a {
+    width: 34rem;
+    height: 34rem;
+    right: -8rem;
+    top: -6rem;
+    background: rgb(245 165 36 / 0.13);
+  }
+  .glow-b {
+    width: 26rem;
+    height: 26rem;
+    left: -12rem;
+    bottom: -10rem;
+    background: rgb(245 165 36 / 0.06);
+  }
+  .ping { animation: ping-soft 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+  .social {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.03);
+    color: var(--color-muted);
+    transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .social:hover {
+    color: var(--color-amber);
+    border-color: rgb(245 165 36 / 0.5);
+    transform: translateY(-3px);
+  }
+
+  /* ---- Portrait stage ---- */
+  .stage {
+    --px: 0;
+    --py: 0;
+    position: relative;
+    width: min(100%, 30rem);
+    aspect-ratio: 1;
+    margin-inline: auto;
+  }
+  @media (max-width: 1023px) { .stage { width: min(78vw, 24rem); } }
+
+  .halo {
+    position: absolute;
+    inset: -12%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(245 165 36 / 0.2), transparent 62%);
+    filter: blur(28px);
+  }
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .ring-outer {
+    inset: 0;
+    border: 1px solid rgb(255 255 255 / 0.07);
+  }
+  .ring-dashed {
+    inset: 4.5%;
+    border: 1px dashed rgb(245 165 36 / 0.32);
+    animation: spin 70s linear infinite;
+  }
+  .ring-dashed i {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-amber);
+    box-shadow: 0 0 14px 2px rgb(245 165 36 / 0.7);
+  }
+  .ring-dashed i:first-child { top: -5px; left: calc(50% - 4.5px); }
+  .ring-dashed i:last-child {
+    width: 6px;
+    height: 6px;
+    bottom: 14%;
+    left: 14%;
+    background: var(--color-fg);
+    box-shadow: 0 0 10px 1px rgb(255 255 255 / 0.5);
+  }
+  .ring-arc {
+    inset: 0;
+    background: conic-gradient(from 0deg, transparent 0 68%, rgb(245 165 36 / 0.95) 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px));
+    animation: spin 16s linear infinite reverse;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .disc {
+    position: absolute;
+    inset: 9%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(circle at 32% 22%, #ffc24a 0%, var(--color-amber-deep) 52%, #c27c00 100%);
+    box-shadow:
+      inset 0 -40px 70px -20px rgb(0 0 0 / 0.35),
+      0 40px 90px -30px rgb(245 165 36 / 0.45);
+  }
+  .disc :global(.portrait) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(calc(var(--px) * -9px), calc(3% + var(--py) * -7px)) scale(1.07);
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+
+  .badge-pos {
+    position: absolute;
+    z-index: 2;
+    transform: translate(calc(var(--px) * 14px), calc(var(--py) * 12px));
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: 0.8rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(18 21 25 / 0.82);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 14px 30px -14px rgb(0 0 0 / 0.8);
+    font-size: 0.78rem;
+    font-weight: 500;
+    white-space: nowrap;
+    animation: bob 6s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+  }
+  @media (max-width: 479px) {
+    .badge { padding: 0.42rem 0.65rem; font-size: 0.7rem; }
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 1.6rem;
+    left: 50%;
+    width: 22px;
+    height: 36px;
+    margin-left: -11px;
+    border: 1.5px solid rgb(255 255 255 / 0.22);
+    border-radius: 999px;
+    display: none;
+  }
+  .scroll-cue span {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 3px;
+    height: 7px;
+    margin-left: -1.5px;
+    border-radius: 2px;
+    background: var(--color-amber);
+    animation: wheel 2s ease-in-out infinite;
+  }
+  @keyframes wheel {
+    0% { transform: translateY(0); opacity: 1; }
+    70%, 100% { transform: translateY(11px); opacity: 0; }
+  }
+  @media (min-width: 1024px) and (min-height: 760px) { .scroll-cue { display: block; } }
+</style>

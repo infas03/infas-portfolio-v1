@@ -1,0 +1,46 @@
+---
+import Icon from './Icon.astro';
+import { nav, site } from '../data/site';
+---
+
+<footer class="border-t border-line bg-ink-900">
+  <div class="wrap flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between">
+    <div>
+      <a href="#top" class="font-display text-xl font-semibold tracking-tight">infas<span class="text-amber">.</span></a>
+      <p class="mt-2 max-w-xs text-sm text-dim">{site.role}</p>
+    </div>
+    <nav class="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer">
+      {nav.map((item) => <a href={item.href} class="text-sm text-muted transition-colors hover:text-amber">{item.label}</a>)}
+    </nav>
+    <div class="flex gap-2.5">
+      <a href={site.github} target="_blank" rel="noopener" aria-label="GitHub" class="f-social"><Icon name="si:github" size={16} /></a>
+      <a href={site.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" class="f-social"><Icon name="si:linkedin" size={15} /></a>
+      <a href={`mailto:${site.email}`} aria-label="Email" class="f-social"><Icon name="lucide:mail" size={16} /></a>
+      <a href={site.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp" class="f-social"><Icon name="si:whatsapp" size={16} /></a>
+    </div>
+  </div>
+  <div class="border-t border-line">
+    <div class="wrap flex flex-wrap items-center justify-between gap-3 py-5 text-xs text-dim">
+      <p>© <span data-year>2026</span> {site.name}. All rights reserved.</p>
+      <a href="#top" class="inline-flex items-center gap-1.5 transition-colors hover:text-amber">Back to top <span aria-hidden="true">↑</span></a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .f-social {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 0.7rem;
+    border: 1px solid var(--color-line);
+    color: var(--color-muted);
+    transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  }
+  .f-social:hover {
+    color: var(--color-amber);
+    border-color: rgb(245 165 36 / 0.5);
+    transform: translateY(-3px);
+  }
+</style>
